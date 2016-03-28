@@ -1,3 +1,12 @@
+/*
+ * Project: jcip-jciop
+ * Author: Marco Faustinelli - Muzietto (contacts@faustinelli.net)
+ * Web: http://faustinelli.wordpress.com/, http://www.github.com/muzietto, http://faustinelli.net/
+ * Version: 1.0
+ * The GPL 3.0 License - Copyright (c) 2015-2016 - The jcip-jciop Project
+ *
+ */
+
 package net.faustinelli.concurrent.desktop_search;
 
 import java.io.File;
@@ -6,7 +15,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Created by Muzietto on 28/03/2016.
+ * Created by Marco Faustinelli (Muzietto) on 28/03/2016.
  */
 public class Main {
     private static final int BOUND = 48;
