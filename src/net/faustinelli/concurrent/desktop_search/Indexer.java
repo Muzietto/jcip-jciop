@@ -21,6 +21,6 @@ public class Indexer implements Runnable {
     }
 
     private void indexFile(File file) {
-        
+        System.out.println(file.getName());
     }
 }

@@ -2,16 +2,21 @@ package net.faustinelli.concurrent.desktop_search;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
  * Created by Muzietto on 27/03/2016.
  */
 public class FileCrawler implements Runnable {
-    private final BlockingQueue<File> fileQueue = new ArrayBlockingQueue<File>(1024);
-    private final FileFilter fileFilter = new ImageFileFilter();
-    private final File root =  new File("");
+    private final BlockingQueue<File> fileQueue;
+    private final FileFilter fileFilter;
+    private final File root;
+
+    public FileCrawler(BlockingQueue<File> queue, FileFilter filter, File root) {
+        this.fileQueue = queue;
+        this.fileFilter = filter;
+        this.root = root;
+    }
 
 
     @Override
@@ -27,12 +32,11 @@ public class FileCrawler implements Runnable {
     private void crawl(File root) throws InterruptedException {
         File[] entries = root.listFiles(fileFilter);
         if (entries != null) {
-            for (File entry :
-                    entries) {
+            for (File entry : entries) {
                 if (entry.isDirectory()) {
-                  crawl(entry);
-                } else if (!alreadyIndexed(entry)){
-                  fileQueue.put(entry);
+                    crawl(entry);
+                } else if (!alreadyIndexed(entry)) {
+                    fileQueue.put(entry);
                 }
             }
         }

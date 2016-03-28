@@ -12,8 +12,7 @@ public class ImageFileFilter implements FileFilter {
 
     @Override
     public boolean accept(File pathname) {
-        for (String extension :
-                okFileExtensions) {
+        for (String extension : okFileExtensions) {
             if (pathname.getName().toLowerCase().endsWith(extension)) {
                 return true;
             }
