@@ -30,6 +30,7 @@ public class FileCrawler implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("THREAD - starting crawler");
         try {
             crawl(root);
         } catch (InterruptedException e) {
@@ -39,12 +40,14 @@ public class FileCrawler implements Runnable {
     }
 
     private void crawl(File root) throws InterruptedException {
+        System.out.println(Thread.currentThread().toString() + " CRAWLER about to crawl " + root.getName());
         File[] entries = root.listFiles(fileFilter);
         if (entries != null) {
             for (File entry : entries) {
                 if (entry.isDirectory()) {
                     crawl(entry);
                 } else if (!alreadyIndexed(entry)) {
+                    System.out.println(Thread.currentThread().toString() + " CRAWLER enqueuing " + entry.getName());
                     fileQueue.put(entry);
                 }
             }

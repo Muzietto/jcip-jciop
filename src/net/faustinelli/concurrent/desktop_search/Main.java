@@ -21,16 +21,26 @@ public class Main {
     private static final int BOUND = 48;
 
     public static void main(String[] args) {
-        startIndexing(new File[]{new File("C:\\Users")});
+        startIndexing(new File[]{
+                new File("C:\\Users"),
+                new File("C:\\Temp"),
+                new File("C:\\Windows"),
+                new File("C:\\Python27")
+        });
 
     }
 
     private static void startIndexing(File[] strings) {
         BlockingQueue<File> queue = new LinkedBlockingQueue<File>(BOUND);
-        FileFilter filter = new ImageFileFilter();
+        FileFilter filter = new ImageAndDirectoryFileFilter();
 
         for (File root : strings) {
             new Thread(new FileCrawler(queue, filter, root)).start();
         }
+
+        new Thread(new Indexer(queue)).start();
+        new Thread(new Indexer(queue)).start();
+        new Thread(new Indexer(queue)).start();
+        new Thread(new Indexer(queue)).start();
     }
 }

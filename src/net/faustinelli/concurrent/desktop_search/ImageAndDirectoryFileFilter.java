@@ -16,11 +16,14 @@ import java.io.FileFilter;
  * Created by Marco Faustinelli (Muzietto) on 27/03/2016.
  * http://alvinalexander.com/blog/post/java/how-implement-java-filefilter-list-files-directory
  */
-public class ImageFileFilter implements FileFilter {
+public class ImageAndDirectoryFileFilter implements FileFilter {
     private final String[] okFileExtensions = new String[]{"jpg", "png", "gif"};
 
     @Override
     public boolean accept(File pathname) {
+        if (pathname.isDirectory()) {
+            return true;
+        }
         for (String extension : okFileExtensions) {
             if (pathname.getName().toLowerCase().endsWith(extension)) {
                 return true;

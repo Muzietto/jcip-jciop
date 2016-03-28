@@ -18,8 +18,13 @@ import java.util.concurrent.BlockingQueue;
 public class Indexer implements Runnable {
     private BlockingQueue<File> queue;
 
+    public Indexer(BlockingQueue<File> queue) {
+        this.queue = queue;
+    }
+
     @Override
     public void run() {
+        System.out.println("THREAD - starting indexer");
         while (true) {
             try {
                 indexFile(queue.take());
@@ -30,6 +35,6 @@ public class Indexer implements Runnable {
     }
 
     private void indexFile(File file) {
-        System.out.println(file.getName());
+        System.out.println(Thread.currentThread().toString() + " - INDEXER indexed " + file.getName());
     }
 }
