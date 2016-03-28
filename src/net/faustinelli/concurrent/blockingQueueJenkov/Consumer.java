@@ -13,21 +13,19 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Created by Marco Faustinelli (Muzietto) on 28/03/2016.
  */
-public class Producer implements Runnable {
-    protected BlockingQueue queue;
+public class Consumer implements Runnable {
+    protected final BlockingQueue queue;
 
-    public Producer(BlockingQueue queue) {
+    public Consumer(BlockingQueue queue) {
         this.queue = queue;
     }
 
     @Override
     public void run() {
         try {
-            queue.put("1");
-            Thread.sleep(1000);
-            queue.put("2");
-            Thread.sleep(1000);
-            queue.put("3");
+            System.out.println(queue.take());
+            System.out.println(queue.take());
+            System.out.println(queue.take());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
