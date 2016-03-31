@@ -28,5 +28,7 @@ public class Main {
         System.out.println("gotten " + fut.get());
 
         es1.shutdown();
+
+        System.out.println("there are " + Runtime.getRuntime().availableProcessors() + " cores.");
     }
 }
