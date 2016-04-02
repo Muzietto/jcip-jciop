@@ -30,13 +30,15 @@ public class Main {
         return Stream.iterate(1L, i -> i + 1)
                 .limit(l)
                 .parallel()
-                .reduce(0L, Long::sum);
+                .reduce(Long::sum)
+                .get();
     }
 
     private static long sequentialSum(long l) {
         return Stream.iterate(1L, i -> i + 1)
                 .limit(l)
-                .reduce(0L, Long::sum);
+                .reduce(Long::sum)
+                .get();
     }
 
 }
