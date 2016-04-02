@@ -16,14 +16,14 @@ public class Main {
         System.out.println(sequentialSum(goal));
 
         long end = (System.nanoTime() - start) / 1_000_000;
-        System.out.println("completed in msec: " + end);
+        System.out.println("sequential completed in msec: " + end);
 
         start = System.nanoTime();
 
         System.out.println(parallelSum(goal));
 
         end = (System.nanoTime() - start) / 1_000_000;
-        System.out.println("completed in msec: " + end);
+        System.out.println("parallel completed in msec: " + end);
     }
 
     private static long parallelSum(long l) {
