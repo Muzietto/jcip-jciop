@@ -40,6 +40,6 @@ public class Main {
         HttpResponse response = request.execute();
         EarthquakeFeed earthquakeFeed = response.parseAs(EarthquakeFeed.class);
 
-        System.out.println(earthquakeFeed.getFeatures().get(0).getProperties().toString());
+        System.out.println(earthquakeFeed.getFeatures().get(0).toString());
     }
 }
