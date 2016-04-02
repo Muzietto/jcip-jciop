@@ -2,11 +2,9 @@ package net.faustinelli.earthquakes.model;
 
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
-import com.sun.org.apache.xerces.internal.impl.dv.xs.DateDV;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 public class EarthquakeFeed {
     @Key
