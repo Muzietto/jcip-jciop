@@ -1,3 +1,11 @@
+/*
+ * Project: jcip-jciop
+ * Author: Marco Faustinelli - Muzietto (contacts@faustinelli.net)
+ * Web: http://faustinelli.wordpress.com/, http://www.github.com/muzietto, http://faustinelli.net/
+ * Version: 1.0
+ * The GPL 3.0 License - Copyright (c) 2015-2016 - The jcip-jciop Project
+ */
+
 package net.jcip.examples;
 
 import java.util.concurrent.*;
@@ -49,6 +57,6 @@ public class TimedPutTakeTest extends PutTakeTest {
                 Thread.sleep(1000);
             }
         }
-        PutTakeTest.pool.shutdown();
+        pool.shutdown();
     }
 }
