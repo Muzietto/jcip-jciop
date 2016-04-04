@@ -12,7 +12,7 @@ package net.faustinelli.concurrent.patternMatching.visitor;
  * Created by Marco Faustinelli (Muzietto) on 04/04/2016.
  */
 public interface TreeVisitor {
-    void visit(Empty empty);
-    void visit(Leaf leaf);
-    void visit(Node node);
+    Object visit(Empty empty);
+    Object visit(Leaf leaf);
+    Object visit(Node node);
 }

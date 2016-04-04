@@ -12,28 +12,21 @@ package net.faustinelli.concurrent.patternMatching.visitor;
  * Created by Marco Faustinelli (Muzietto) on 04/04/2016.
  */
 public class TreeDepthVisitor implements TreeVisitor {
-    private int depth;
 
     @Override
-    public void visit(Empty empty) {
+    public Integer visit(Empty empty) {
+        return 0;
     }
 
     @Override
-    public void visit(Leaf leaf) {
-        depth++;
+    public Integer visit(Leaf leaf) {
+        return 1;
     }
 
     @Override
-    public void visit(Node node) {
-        depth++;
-        TreeDepthVisitor leftVisitor = new TreeDepthVisitor();
-        TreeDepthVisitor rightVisitor = new TreeDepthVisitor();
-        node.getLeft().accept(leftVisitor);
-        node.getRight().accept(rightVisitor);
-        depth += Math.max(leftVisitor.depth(), rightVisitor.depth());
-    }
-
-    public int depth() {
-        return depth;
+    public Integer visit(Node node) {
+        Integer leftDepth = (Integer) node.getLeft().accept(this);
+        Integer rightDepth = (Integer) node.getRight().accept(this);
+        return 1 + Math.max(leftDepth, rightDepth);
     }
 }

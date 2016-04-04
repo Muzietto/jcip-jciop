@@ -15,7 +15,7 @@ import sun.reflect.generics.visitor.Visitor;
  */
 public class Empty implements Tree {
     @Override
-    public void accept(TreeVisitor visitor) {
-        visitor.visit(this);
+    public Object accept(TreeVisitor visitor) {
+        return visitor.visit(this);
     }
 }

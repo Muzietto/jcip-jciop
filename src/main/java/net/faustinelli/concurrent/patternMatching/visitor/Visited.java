@@ -12,5 +12,5 @@ package net.faustinelli.concurrent.patternMatching.visitor;
  * Created by Marco Faustinelli (Muzietto) on 04/04/2016.
  */
 public interface Visited<V> {
-    void accept(V visitor);
+    Object accept(V visitor);
 }

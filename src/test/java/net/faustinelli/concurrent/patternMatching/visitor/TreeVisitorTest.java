@@ -14,44 +14,46 @@ import junit.framework.TestCase;
  * Created by Marco Faustinelli (Muzietto) on 04/04/2016.
  */
 public class TreeVisitorTest extends TestCase {
+
     public void testDepthEmptyTreeIsZero() throws Exception {
         Empty emptyTree = new Empty();
         TreeDepthVisitor visitor = new TreeDepthVisitor();
-        visitor.visit(emptyTree);
-        assertEquals(0, visitor.depth());
+        assertEquals(new Integer(0), emptyTree.accept(visitor));
     }
 
     public void testDepthLeafIsOne() throws Exception {
         Leaf leaf = new Leaf("test");
         TreeDepthVisitor visitor = new TreeDepthVisitor();
-        visitor.visit(leaf);
-        assertEquals(1, visitor.depth());
+        assertEquals(new Integer(1), leaf.accept(visitor));
     }
 
     public void testDepthNodeOfEmptiesIsOne() throws Exception {
         Node node = new Node(new Empty(), new Empty());
         TreeDepthVisitor visitor = new TreeDepthVisitor();
-        visitor.visit(node);
-        assertEquals(1, visitor.depth());
+        assertEquals(new Integer(1), node.accept(visitor));
     }
 
     public void testDepthNodeOfOneLeaveIsTwo() throws Exception {
         Node node = new Node(new Leaf("left"), new Empty());
         TreeDepthVisitor visitor = new TreeDepthVisitor();
-        visitor.visit(node);
-        assertEquals(2, visitor.depth());
+        assertEquals(new Integer(2), visitor.visit(node));
     }
 
     public void testDepthNodeOfTwoLeavesIsTwo() throws Exception {
         Node node = new Node(new Leaf("left"), new Leaf("right"));
         TreeDepthVisitor visitor = new TreeDepthVisitor();
-        visitor.visit(node);
-        assertEquals(2, visitor.depth());
+        assertEquals(new Integer(2), visitor.visit(node));
     }
 
-    public void testDepthNodeOfNodeOfLeavesIsTwo() throws Exception {
+    public void testDepthNodeOfNodeOfLeavesIsThree() throws Exception {
         Node node = new Node(new Leaf("left"), new Node(new Leaf("left2"), new Leaf("right2")));
         TreeDepthVisitor visitor = new TreeDepthVisitor();
-        visitor.visit(node);
-        assertEquals(3, visitor.depth());
-    }}
+        assertEquals(new Integer(3), visitor.visit(node));
+    }
+
+    public void testComplexTree() throws Exception {
+        Node node = new Node(new Leaf("left"), new Node(new Node(new Leaf("left3"), new Leaf("right3")), new Leaf("right2")));
+        TreeDepthVisitor visitor = new TreeDepthVisitor();
+        assertEquals(new Integer(4), visitor.visit(node));
+    }
+}

@@ -21,8 +21,7 @@ public class Leaf implements Tree {
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
-        visitor.visit(this);
-
+    public Object accept(TreeVisitor visitor) {
+        return visitor.visit(this);
     }
 }
