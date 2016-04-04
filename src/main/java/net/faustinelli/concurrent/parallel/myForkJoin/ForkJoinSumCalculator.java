@@ -9,44 +9,31 @@
 package net.faustinelli.concurrent.parallel.myForkJoin;
 
 import java.util.Random;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
+import java.util.stream.LongStream;
 
 /**
  * Created by Marco Faustinelli (Muzietto) on 04/04/2016.
  */
-public class ForkJoinSumCalculator extends RecursiveTask<Integer> {
-    private final int[] numbers;
+public class ForkJoinSumCalculator extends RecursiveTask<Long> {
+    private final long[] numbers;
     private final int start;
     private final int end;
-    private final long THRESHOLD = 10000000L;
+    public static final long THRESHOLD = 10_000;
 
-    public ForkJoinSumCalculator(int[] numbers) {
+    public ForkJoinSumCalculator(long[] numbers) {
         this(numbers, 0, numbers.length);
     }
 
-    public ForkJoinSumCalculator(int[] numbers, int start, int end) {
+    public ForkJoinSumCalculator(long[] numbers, int start, int end) {
         this.numbers = numbers;
         this.start = start;
         this.end = end;
     }
 
-    private int parallelSum() {
-        if (this.end < this.THRESHOLD) {
-            return sequentialSum();
-        } else {
-            int length = this.end - this.start;
-            ForkJoinSumCalculator leftTask = new ForkJoinSumCalculator(numbers, this.start, this.start + length / 2);
-            ForkJoinSumCalculator rightTask = new ForkJoinSumCalculator(numbers, (this.start + length / 2) , this.end);
-
-            leftTask.fork();
-            Integer rightResult = rightTask.compute();
-            Integer leftResult = leftTask.join();
-            return rightResult + leftResult;
-        }
-    }
-
-    private int sequentialSum() {
-        int result = 0;
+    private long sequentialSum() {
+        long result = 0;
         for (int counter = 0; counter < this.end; counter++) {
             result += this.numbers[counter];
         }
@@ -54,32 +41,38 @@ public class ForkJoinSumCalculator extends RecursiveTask<Integer> {
     }
 
     @Override
-    protected Integer compute() {
-        return sequentialSum();
+    protected Long compute() {
+        int length = this.end - this.start;
+        if (length <= this.THRESHOLD) {
+            return sequentialSum();
+        } else {
+            ForkJoinSumCalculator leftTask = new ForkJoinSumCalculator(numbers, this.start, this.start + length / 2);
+            ForkJoinSumCalculator rightTask = new ForkJoinSumCalculator(numbers, this.start + length / 2, this.end);
+
+            leftTask.fork();
+            Long rightResult = rightTask.compute();
+            Long leftResult = leftTask.join();
+            return rightResult + leftResult;
+        }
     }
 
     public static void main(String[] args) {
         Random rnd = new Random();
-        long goal = 80000000L;
-        int[] ints = new int[(int) goal];
-        for (long counter = 0L; counter < goal; counter++) {
-            ints[((int) counter)] = rnd.nextInt();
-        }
+        long goal = 4000000L;
+        long[] longs = LongStream.rangeClosed(1, goal).toArray();
 
         long start = System.nanoTime();
 
-        System.out.println(new ForkJoinSumCalculator(ints).sequentialSum());
+        System.out.println(new ForkJoinSumCalculator(longs).sequentialSum());
 
         long end = (System.nanoTime() - start) / 1_000_000;
         System.out.println("sequential completed in msec: " + end);
 
         start = System.nanoTime();
 
-        System.out.println(new ForkJoinSumCalculator(ints).parallelSum());
+        System.out.println(new ForkJoinPool().invoke(new ForkJoinSumCalculator(longs)));
 
         end = (System.nanoTime() - start) / 1_000_000;
         System.out.println("parallel completed in msec: " + end);
-
     }
-
 }
