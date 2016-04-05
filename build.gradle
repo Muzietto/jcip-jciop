@@ -25,4 +25,6 @@ dependencies {
     compile 'org.apache.lucene:lucene-grouping:3.2.0'
     compile 'org.eclipse.jetty:jetty-server:9.3.2.v20150730'
     testCompile 'junit:junit:3.8.2'
+    compile 'com.pholser:junit-quickcheck-core:0.6'
+    compile 'com.pholser:junit-quickcheck-generators:0.6'
 }
