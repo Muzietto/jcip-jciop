@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 /**
  * Created by Marco Faustinelli (Muzietto) on 04/04/2016.
  */
-public class TreeVisitorTest extends TestCase {
+public class TreeDepthVisitorTest extends TestCase {
 
     public void testDepthEmptyTreeIsZero() throws Exception {
         Empty emptyTree = new Empty();
@@ -36,24 +36,24 @@ public class TreeVisitorTest extends TestCase {
     public void testDepthNodeOfOneLeaveIsTwo() throws Exception {
         Node node = new Node(new Leaf("left"), new Empty());
         TreeDepthVisitor visitor = new TreeDepthVisitor();
-        assertEquals(new Integer(2), visitor.visit(node));
+        assertEquals(new Integer(2), node.accept(visitor));
     }
 
     public void testDepthNodeOfTwoLeavesIsTwo() throws Exception {
         Node node = new Node(new Leaf("left"), new Leaf("right"));
         TreeDepthVisitor visitor = new TreeDepthVisitor();
-        assertEquals(new Integer(2), visitor.visit(node));
+        assertEquals(new Integer(2), node.accept(visitor));
     }
 
     public void testDepthNodeOfNodeOfLeavesIsThree() throws Exception {
         Node node = new Node(new Leaf("left"), new Node(new Leaf("left2"), new Leaf("right2")));
         TreeDepthVisitor visitor = new TreeDepthVisitor();
-        assertEquals(new Integer(3), visitor.visit(node));
+        assertEquals(new Integer(3), node.accept(visitor));
     }
 
     public void testComplexTree() throws Exception {
         Node node = new Node(new Leaf("left"), new Node(new Node(new Leaf("left3"), new Leaf("right3")), new Leaf("right2")));
         TreeDepthVisitor visitor = new TreeDepthVisitor();
-        assertEquals(new Integer(4), visitor.visit(node));
+        assertEquals(new Integer(4), node.accept(visitor));
     }
 }
