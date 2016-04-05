@@ -24,4 +24,8 @@ public class Leaf implements Tree {
     public Object accept(TreeVisitor visitor) {
         return visitor.visit(this);
     }
+
+    public String getValue() {
+        return value;
+    }
 }
