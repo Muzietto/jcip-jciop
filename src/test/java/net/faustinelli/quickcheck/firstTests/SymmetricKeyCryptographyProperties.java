@@ -8,6 +8,7 @@
 
 package net.faustinelli.quickcheck.firstTests;
 
+import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.runner.RunWith;
@@ -20,17 +21,17 @@ import static org.junit.Assert.assertEquals;
 @RunWith(JUnitQuickcheck.class)
 public class SymmetricKeyCryptographyProperties {
     @Property
-    public void decryptReversesEncrypt(String plaintext, String key)
+    public void decryptReversesEncrypt(Crypto.Bytes bytes, String key)
             throws Exception {
 
         Crypto crypto = new Crypto();
 
         byte[] ciphertext =
-                crypto.encrypt(plaintext.getBytes("UTF-8"), key);
+                crypto.encrypt(bytes.getBytes(), key);
 
         assertEquals(
-                plaintext,
-                new String(crypto.decrypt(ciphertext, key)));
+                bytes,
+                crypto.decrypt(ciphertext, key));
     }
 
 

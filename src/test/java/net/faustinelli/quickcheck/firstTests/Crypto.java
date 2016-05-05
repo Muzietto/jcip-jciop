@@ -9,6 +9,7 @@
 package net.faustinelli.quickcheck.firstTests;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 /**
  * Created by Marco Faustinelli (Muzietto) on 05/04/2016.
@@ -20,5 +21,17 @@ public class Crypto {
 
     byte[] decrypt(byte[] ciphertext, String key) throws UnsupportedEncodingException {
         return new String(ciphertext).substring(0, ciphertext.length - key.length()).getBytes("UTF-8");
+    }
+
+    public static class Bytes {
+        private byte[] bytes;
+
+        public Bytes(String text) throws UnsupportedEncodingException {
+            this.bytes = text.replaceAll("[^a-zA-Z0-9]","").getBytes("UTF-8");
+        }
+
+        public byte[] getBytes() {
+            return bytes;
+        }
     }
 }
