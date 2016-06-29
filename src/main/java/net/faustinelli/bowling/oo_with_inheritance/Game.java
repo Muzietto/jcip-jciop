@@ -1,7 +1,8 @@
-package net.faustinelli.funkyJavaGym.net.faustinelli.bowling;
+package net.faustinelli.funkyJavaGym.net.faustinelli.bowling.oo_with_inheritance;
 
 public class Game {
 
+    private int numberOfFramesInGame = 10;
     private Frame currentFrame;
 
     public Game() {
@@ -9,12 +10,16 @@ public class Game {
     }
 
     public void init() {
-        currentFrame = new Frame(currentFrame, this);
+        if (numberOfFrames() < this.numberOfFramesInGame - 1) {
+            currentFrame = new Frame(currentFrame, this);
+        } else {
+            currentFrame = new LastFrame(currentFrame, this);
+        }
     }
 
     // how many pins did you bump?
     public void roll(int pins) {
-        if (currentFrame.gameIsOver()) {
+        if (!currentFrame.gameIsStillGoingOn()) {
             throw new RuntimeException("bowling game over!");
         }
 
@@ -26,6 +31,6 @@ public class Game {
     }
 
     public int numberOfFrames() {
-        return currentFrame.numberOfFrames();
+        return (currentFrame == null) ? 0 : currentFrame.numberOfFrames();
     }
 }
