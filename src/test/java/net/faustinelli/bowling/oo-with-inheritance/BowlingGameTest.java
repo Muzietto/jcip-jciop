@@ -1,4 +1,4 @@
-package net.faustinelli.funkyJavaGym.net.faustinelli.bowling.oo-with-inheritance;
+package net.faustinelli.funkyJavaGym.net.faustinelli.bowling.oo_with_inheritance;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertTrue;
