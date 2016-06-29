@@ -1,4 +1,4 @@
-package net.faustinelli.funkyJavaGym.net.faustinelli.bowling;
+package net.faustinelli.funkyJavaGym.net.faustinelli.bowling.naive;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertTrue;
