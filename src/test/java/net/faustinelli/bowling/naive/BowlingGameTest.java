@@ -1,6 +1,7 @@
 package net.faustinelli.funkyJavaGym.net.faustinelli.bowling;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +34,16 @@ public class BowlingGameTest {
         g.roll(3);
         rollMany(16, 0);
         assertEquals(19, g.score());
+    }
+
+    @Test
+    public void testJustTenFrames() {
+        try {
+            rollMany(21, 0);
+            assertTrue(false);
+        } catch (Exception e) {
+            assertTrue(true);
+        }
     }
 
     @Test
