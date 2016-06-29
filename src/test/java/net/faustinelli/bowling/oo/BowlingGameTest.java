@@ -64,7 +64,6 @@ public class BowlingGameTest {
         assertEquals(24, game.score());
     }
 
-    // FAILS - strike scores aren't updated recursively (yet)
     @Test
     public void testTwoStrikes() {
         rollStrike();
@@ -103,7 +102,6 @@ public class BowlingGameTest {
         assertEquals(133, game.score());
     }
 
-    // FAILS - strike scores aren't updated recursively (yet)
     @Test
     public void testPerfectGame() {
         rollMany(12, 10);
