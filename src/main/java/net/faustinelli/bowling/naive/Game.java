@@ -1,7 +1,5 @@
 package net.faustinelli.funkyJavaGym.net.faustinelli.bowling;
 
-import sun.plugin.dom.exception.InvalidStateException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class Game {
     // how many pins did you bump?
     public void roll(int pins) {
         if (gameIsOver()) {
-            throw new InvalidStateException("bowling game over!");
+            throw new RuntimeException("bowling game over!");
         }
 
         if (this.frames.size() < 11) {
