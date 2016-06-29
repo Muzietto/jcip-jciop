@@ -1,13 +1,14 @@
-package net.faustinelli.funkyJavaGym.net.faustinelli.bowling;
+package net.faustinelli.funkyJavaGym.net.faustinelli.bowling.oo_with_inheritance;
 
 public class Frame {
 
-    private int score = 0;
-    private final Frame previousFrame;
-    private Game game;
+    protected int score = 0;
+    protected final Frame previousFrame;
+    protected Game game;
 
-    public boolean isFirstRoll = true;
-    public boolean isStrike = false;
+    protected boolean isFirstRoll = true;
+    protected boolean isSecondRoll = false;
+    protected boolean isStrike = false;
 
     public Frame(Frame previousFrame, Game game) {
         this.previousFrame = previousFrame;
@@ -30,20 +31,22 @@ public class Frame {
         return 1 + ((previousFrame != null) ? previousFrame.numberOfFrames() : 0);
     }
 
-    public boolean gameIsOver() {
-        return numberOfFrames() > 10
-               && !(previousFrameWasSpare() || previousFrameWasStrike());
+    public boolean gameIsStillGoingOn() {
+        return true;
     }
 
     public void roll(int pins) {
-        if (game.numberOfFrames() < 11) {
-            incrementScore(pins);
-        }
+        updateScores(pins);
+        updateGameState(pins);
+    }
+
+    protected void updateScores(int pins) {
+        incrementScore(pins);
 
         if (isFirstRoll) {
             if (previousFrameWasStrike()) {
                 incrementPreviousFrameScore(pins);
-                if (previousFrame.previousFrameWasStrike() && game.numberOfFrames() < 12) {
+                if (previousFrame.previousFrameWasStrike()) {
                     previousFrame.incrementPreviousFrameScore(pins);
                 }
             }
@@ -51,13 +54,11 @@ public class Frame {
             if (previousFrameWasSpare()) {
                 incrementPreviousFrameScore(pins);
             }
-        } else {
+        } else if (isSecondRoll) {
             if (previousFrameWasStrike()) {
                 incrementPreviousFrameScore(pins);
             }
         }
-
-        updateGameState(pins);
     }
 
     private void incrementPreviousFrameScore(int pins) {
@@ -69,6 +70,7 @@ public class Frame {
     private void updateGameState(int pins) {
         if (isFirstRoll) {
             isFirstRoll = false;
+            isSecondRoll = true;
             if (pins == 10) {
                 isStrike = true;
                 game.init();
@@ -78,11 +80,11 @@ public class Frame {
         }
     }
 
-    public boolean previousFrameWasSpare() {
+    private boolean previousFrameWasSpare() {
         return previousFrame != null && previousFrame.getScore() == 10 && !previousFrame.isStrike;
     }
 
-    public boolean previousFrameWasStrike() {
+    private boolean previousFrameWasStrike() {
         return previousFrame != null && previousFrame.isStrike;
     }
 }
