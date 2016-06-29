@@ -39,7 +39,7 @@ public class BowlingGameTest {
     @Test
     public void testJustTenFrames() {
         try {
-            rollMany(21, 0);
+            rollMany(23, 0);
             assertTrue(false);
         } catch (Exception e) {
             assertTrue(true);
