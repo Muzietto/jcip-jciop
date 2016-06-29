@@ -18,11 +18,7 @@ public class Frame {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public void incrementScore(int pins) {
+    private void incrementScore(int pins) {
         this.score += pins;
     }
 
@@ -34,23 +30,45 @@ public class Frame {
         return 1 + ((previousFrame != null) ? previousFrame.numberOfFrames() : 0);
     }
 
+    public boolean gameIsOver() {
+        return numberOfFrames() > 10
+               && !(previousFrameWasSpare() || previousFrameWasStrike());
+    }
+
     public void roll(int pins) {
         if (game.numberOfFrames() < 11) {
             incrementScore(pins);
         }
 
-        if (previousFrameWasStrike()) {
-            previousFrame.incrementScore(pins);
-        }
-
         if (isFirstRoll) {
-
-            if (previousFrameWasSpare()) {
-                previousFrame.incrementScore(pins);
+            if (previousFrameWasStrike()) {
+                incrementPreviousFrameScore(pins);
+                if (previousFrame.previousFrameWasStrike() && game.numberOfFrames() < 12) {
+                    previousFrame.incrementPreviousFrameScore(pins);
+                }
             }
 
-            isFirstRoll = false;
+            if (previousFrameWasSpare()) {
+                incrementPreviousFrameScore(pins);
+            }
+        } else {
+            if (previousFrameWasStrike()) {
+                incrementPreviousFrameScore(pins);
+            }
+        }
 
+        updateGameState(pins);
+    }
+
+    private void incrementPreviousFrameScore(int pins) {
+        if (previousFrame != null) {
+            previousFrame.incrementScore(pins);
+        }
+    }
+
+    private void updateGameState(int pins) {
+        if (isFirstRoll) {
+            isFirstRoll = false;
             if (pins == 10) {
                 isStrike = true;
                 game.init();
@@ -60,11 +78,11 @@ public class Frame {
         }
     }
 
-    private boolean previousFrameWasSpare() {
+    public boolean previousFrameWasSpare() {
         return previousFrame != null && previousFrame.getScore() == 10 && !previousFrame.isStrike;
     }
 
-    private boolean previousFrameWasStrike() {
+    public boolean previousFrameWasStrike() {
         return previousFrame != null && previousFrame.isStrike;
     }
 }
