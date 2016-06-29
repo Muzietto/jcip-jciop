@@ -64,6 +64,16 @@ public class BowlingGameTest {
         assertEquals(24, g.score());
     }
 
+    // FAILS - strike scores aren't updated recursively
+    @Test
+    public void testTwoStrikes() {
+        rollStrike();
+        rollStrike();
+        rollFrame(3, 4);
+        rollMany(14, 0);
+        assertEquals(47, game.score());
+    }
+
     @Test
     public void testTwoSparesAndOneStrike() {
         rollFrame(1, 4); // 5
@@ -91,6 +101,13 @@ public class BowlingGameTest {
         rollSpare(2);
         g.roll(6);
         assertEquals(133, g.score());
+    }
+
+    // FAILS - strike scores aren't updated recursively
+    @Test
+    public void testPerfectGame() {
+        rollMany(12, 10);
+        assertEquals(300, game.score());
     }
 
     private void rollFrame(int firstRoll, int secondRoll) {
