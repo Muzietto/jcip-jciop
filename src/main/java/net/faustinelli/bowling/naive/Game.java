@@ -1,4 +1,4 @@
-package net.faustinelli.funkyJavaGym.net.faustinelli.bowling;
+package net.faustinelli.funkyJavaGym.net.faustinelli.bowling.naive;
 
 import java.util.ArrayList;
 import java.util.List;
