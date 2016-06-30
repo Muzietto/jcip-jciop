@@ -1,4 +1,4 @@
-package net.faustinelli.funkyJavaGym.net.faustinelli.bowling.oo;
+package net.faustinelli.bowling.oo;
 
 public class Game {
 

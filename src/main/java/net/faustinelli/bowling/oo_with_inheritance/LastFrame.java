@@ -1,4 +1,4 @@
-package net.faustinelli.funkyJavaGym.net.faustinelli.bowling.oo_with_inheritance;
+package net.faustinelli.bowling.oo_with_inheritance;
 
 public class LastFrame extends Frame {
 

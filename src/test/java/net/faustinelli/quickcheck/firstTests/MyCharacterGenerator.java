@@ -26,7 +26,7 @@ public class MyCharacterGenerator extends Generator<String> {
             + UPPERCASE_CHARS + NUMBERS + SPECIAL_CHARS;
     public static final int CAPACITY = 40;
 
-    public MyCharacters() {
+    public MyCharacterGenerator() {
         super(String.class);
     }
 

@@ -1,4 +1,4 @@
-package net.faustinelli.funkyJavaGym.net.faustinelli.bowling.naive;
+package net.faustinelli.bowling.naive;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -8,32 +8,32 @@ import org.junit.Test;
 
 public class BowlingGameTest {
 
-    private Game g;
+    private Game game;
 
     @Before
     public void setUp() {
-        this.g = new Game();
+        this.game = new Game();
     }
 
     @Test
     public void testAllInGutter() {
         rollMany(20, 0);
-        assertEquals(0, g.score());
+        assertEquals(0, game.score());
     }
 
     @Test
     public void testAllOnes() {
         rollMany(20, 1);
-        assertEquals(20, g.score());
+        assertEquals(20, game.score());
     }
 
     @Test
     public void testOneSpare() {
         rollSpare(4);
-        g.roll(3);
-        g.roll(3);
+        game.roll(3);
+        game.roll(3);
         rollMany(16, 0);
-        assertEquals(19, g.score());
+        assertEquals(19, game.score());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class BowlingGameTest {
         rollSpare(6);    // 10+5
         rollSpare(5);    // 10+0
         rollMany(12, 0);
-        assertEquals(29+10, g.score());
+        assertEquals(29+10, game.score());
     }
 
     @Test
@@ -61,7 +61,7 @@ public class BowlingGameTest {
         rollStrike();
         rollFrame(3, 4);
         rollMany(16, 0);
-        assertEquals(24, g.score());
+        assertEquals(24, game.score());
     }
 
     // FAILS - strike scores aren't updated recursively
@@ -83,7 +83,7 @@ public class BowlingGameTest {
         rollStrike();
         rollFrame(1, 0);
         rollMany(8, 0);
-        assertEquals(61, g.score());
+        assertEquals(61, game.score());
     }
 
     @Test
@@ -99,8 +99,8 @@ public class BowlingGameTest {
         rollStrike();
 
         rollSpare(2);
-        g.roll(6);
-        assertEquals(133, g.score());
+        game.roll(6);
+        assertEquals(133, game.score());
     }
 
     // FAILS - strike scores aren't updated recursively
@@ -111,12 +111,12 @@ public class BowlingGameTest {
     }
 
     private void rollFrame(int firstRoll, int secondRoll) {
-        g.roll(firstRoll);
-        g.roll(secondRoll);
+        game.roll(firstRoll);
+        game.roll(secondRoll);
     }
 
     private void rollStrike() {
-        g.roll(10);
+        game.roll(10);
     }
 
     private void rollSpare(int firstRoll) {
@@ -125,7 +125,7 @@ public class BowlingGameTest {
 
     private void rollMany(int rounds, int pins) {
         for (int i = 0; i < rounds; i++) {
-            g.roll(pins);
+            game.roll(pins);
         }
     }
 }
