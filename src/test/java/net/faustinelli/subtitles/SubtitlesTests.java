@@ -46,6 +46,14 @@ public class SubtitlesTests {
     }
 
     @Test
+    public void testSubtitlePrintings() {
+        Subtitle sub = new Subtitle("12","00:01:02","03:04:05","dear\nfriend");
+
+        assertEquals("00:01:02 --> 03:04:05", sub.instantsString());
+        assertEquals("12\n00:01:02 --> 03:04:05\ndear\nfriend\n\n", sub.toString());
+    }
+
+    @Test
     public void readFileIntoSubtitlesListTest() {
 
     }
