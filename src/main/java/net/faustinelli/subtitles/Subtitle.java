@@ -1,5 +1,7 @@
 package net.faustinelli.subtitles;
 
+import static java.util.concurrent.TimeUnit.HOURS;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class Subtitle {
 
@@ -59,7 +60,7 @@ public class Subtitle {
     // sample input: 01:12:23
     private Long parseTimeString(String instant) {
         String[] pieces = instant.split(":");
-        Long hourInSeconds = TimeUnit.SECONDS.convert(Long.parseLong(pieces[0]), TimeUnit.HOURS);
+        Long hourInSeconds = TimeUnit.SECONDS.convert(Long.parseLong(pieces[0]), HOURS);
         Long minuteInSeconds = TimeUnit.SECONDS.convert(Long.parseLong(pieces[1]), TimeUnit.MINUTES);
         Long seconds = Long.parseLong(pieces[2]);
         return hourInSeconds + minuteInSeconds + seconds;
@@ -83,9 +84,30 @@ public class Subtitle {
     @Override
     public String toString() {
         return ""
-            + this.position.toString() + "\n"
-            + instantsString() + "\n"
-            + this.text.toString() + "\n\n";
+               + this.position.toString() + "\n"
+               + instantsString() + "\n"
+               + this.text.toString() + "\n";
+    }
+
+    public void increaseInstants(TimeUnit unit, Integer i) {
+        switch (unit) {
+            case HOURS: {
+                this.startInstant += 3600 * i;
+                this.endInstant += 3600 * i;
+                break;
+            }
+            case MINUTES: {
+                this.startInstant += 60 * i;
+                this.endInstant += 60 * i;
+                break;
+            }
+            case SECONDS: {
+                this.startInstant += i;
+                this.endInstant += i;
+                break;
+            }
+            default: {}
+        }
     }
 
     public static class SubtitlePiecesCollector {
@@ -122,52 +144,47 @@ public class Subtitle {
 
     public static void main(String args[]) throws FileNotFoundException {
 
-//        System.out.println("Working Directory = " + System.getProperty("user.dir"));
-
         String filename = "I:/software/experiments/module_1/src/main/resources/subtitles/samples/example1.srt";
         File file = new File(filename);
 
         URL url = new Object().getClass().getResource(filename);
-        //File file = new File(url.getPath());
-
-        //System.out.println(new Subtitle("1","00:02:17","00:02:20","Senator, we're making\n our final approach into Coruscant.").parseTimeString("01:01:13"));
-
-        //read file into stream, try-with-resources
         try {
+            List<Subtitle> subtitles = readFileIntoSubtitles(filename);
 
-            Stream<String> stream = Files.lines(Paths.get(filename));
-//            stream
-//                .filter(PRED_TEXT)
-//                .forEach(System.out::println);
-
-            List<Subtitle> subs = stream
-                .reduce(new SubtitlePiecesCollector(),
-                        (SubtitlePiecesCollector acc, String line) -> {
-                            if (Subtitle.PRED_POSITION.test(line)) {
-                                System.out.println("position=" + line);
-                                acc.position = line;
-                            }
-                            if (Subtitle.PRED_INSTANTS.test(line)) {
-                                System.out.println("instants=" + line);
-                                acc.instants = line;
-                            }
-                            if (Subtitle.PRED_TEXT.test(line)) {
-                                System.out.println("newtext=" + line);
-                                acc.text.append((acc.text.length() == 0) ? line : "\n" + line);
-                            }
-                            if (Subtitle.PRED_EMPTY_LINE.test(line)) {
-                                System.out.println("FLUSHING");
-                                acc = acc.flushSubtitle();
-                            }
-                            return acc;
-                        },
-                        (a, b) -> a).harvest;
-
-            String pippo = "";
+            for (Subtitle sub : subtitles
+                ) {
+                System.out.println(sub.toString());
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public static List<Subtitle> readFileIntoSubtitles(String filename) throws IOException {
+
+        return Files.lines(Paths.get(filename))
+            .reduce(new SubtitlePiecesCollector(),
+                    (SubtitlePiecesCollector acc, String line) -> {
+                        if (Subtitle.PRED_POSITION.test(line)) {
+                            System.out.println("position=" + line);
+                            acc.position = line;
+                        }
+                        if (Subtitle.PRED_INSTANTS.test(line)) {
+                            System.out.println("instants=" + line);
+                            acc.instants = line;
+                        }
+                        if (Subtitle.PRED_TEXT.test(line)) {
+                            System.out.println("newtext=" + line);
+                            acc.text.append((acc.text.length() == 0) ? line : "\n" + line);
+                        }
+                        if (Subtitle.PRED_EMPTY_LINE.test(line)) {
+                            System.out.println("FLUSHING");
+                            acc = acc.flushSubtitle();
+                        }
+                        return acc;
+                    },
+                    (a, b) -> a).harvest;
     }
 }
