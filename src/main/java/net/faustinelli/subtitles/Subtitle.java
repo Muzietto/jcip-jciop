@@ -2,10 +2,7 @@ package net.faustinelli.subtitles;
 
 import static java.util.concurrent.TimeUnit.HOURS;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class Subtitle {
 
@@ -110,18 +108,22 @@ public class Subtitle {
         }
     }
 
+    public static void increaseInstants(List<Subtitle> subtitles, TimeUnit unit, Integer i) {
+        subtitles.stream().forEach(sub -> sub.increaseInstants(unit, i));
+    }
+
     public static class SubtitlePiecesCollector {
 
         public String position = "";
         public String instants = "";
         public StringBuilder text = new StringBuilder();
-        public List<Subtitle> harvest = new ArrayList<>();
+        public List<Subtitle> subtitles = new ArrayList<>();
 
         public SubtitlePiecesCollector() {
         }
 
         public SubtitlePiecesCollector(List<Subtitle> subtitles) {
-            this.harvest = new ArrayList<>(subtitles);
+            this.subtitles = new ArrayList<>(subtitles);
         }
 
         public SubtitlePiecesCollector flushSubtitle() {
@@ -136,30 +138,22 @@ public class Subtitle {
             }
 
             Subtitle newOne = new Subtitle(this.position, this.instants, this.text.toString());
-            SubtitlePiecesCollector result = new SubtitlePiecesCollector(this.harvest);
-            result.harvest.add(newOne);
+            SubtitlePiecesCollector result = new SubtitlePiecesCollector(this.subtitles);
+            result.subtitles.add(newOne);
             return result;
         }
-    }
 
-    public static void main(String args[]) throws FileNotFoundException {
+        public void dumpToFile(String filename) throws IOException {
+            Stream<String> subsStream = this.subtitles.stream().map(Subtitle::toString);
+            Iterable<String> iterableSubtitles = subsStream::iterator;
 
-        String filename = "I:/software/experiments/module_1/src/main/resources/subtitles/samples/example1.srt";
-        File file = new File(filename);
+            Files.write(Paths.get(filename), iterableSubtitles);
 
-        URL url = new Object().getClass().getResource(filename);
-        try {
-            List<Subtitle> subtitles = readFileIntoSubtitles(filename);
-
-            for (Subtitle sub : subtitles
-                ) {
-                System.out.println(sub.toString());
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
+        public void increaseInstants(TimeUnit unit, int i) {
+            this.subtitles.stream().forEach(sub -> sub.increaseInstants(unit, i));
+        }
     }
 
     public static List<Subtitle> readFileIntoSubtitles(String filename) throws IOException {
@@ -185,6 +179,16 @@ public class Subtitle {
                         }
                         return acc;
                     },
-                    (a, b) -> a).harvest;
+                    (a, b) -> a).subtitles;
+    }
+
+    public static void main(String[] args) throws IOException {
+        String input = "I:/software/experiments/module_1/src/main/resources/subtitles/samples/example1.srt";
+        String output = "I:/software/experiments/module_1/src/main/resources/subtitles/samples/example1_out.srt";
+        List<Subtitle> subtitles1 = Subtitle.readFileIntoSubtitles(input);
+
+        SubtitlePiecesCollector collector = new SubtitlePiecesCollector(subtitles1);
+        collector.increaseInstants(TimeUnit.SECONDS, 27);
+        collector.dumpToFile(output);
     }
 }
