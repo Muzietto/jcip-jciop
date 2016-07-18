@@ -41,10 +41,10 @@ public class Subtitle {
         this(position, splitInstants(instants)[0], splitInstants(instants)[1], text);
     }
 
-    public Subtitle(String position, String startInstant, String endInstant, String text) {
+    public Subtitle(String position, String startInstantString, String endInstantString, String text) {
         this.position = Integer.parseInt(position);
-        this.startInstant = parseTimeString(startInstant);
-        this.endInstant = parseTimeString(endInstant);
+        this.startInstant = parseTimeString(startInstantString);
+        this.endInstant = parseTimeString(endInstantString);
         this.text = text;
     }
 
@@ -63,6 +63,29 @@ public class Subtitle {
         Long minuteInSeconds = TimeUnit.SECONDS.convert(Long.parseLong(pieces[1]), TimeUnit.MINUTES);
         Long seconds = Long.parseLong(pieces[2]);
         return hourInSeconds + minuteInSeconds + seconds;
+    }
+
+    public String instantsString() {
+        return instantString(this.startInstant) + " --> " + instantString(this.endInstant);
+    }
+
+    private String instantString(Long instant) {
+
+        Long hours = instant / 3600L;
+        Long minutes = (instant - hours * 3600) / 60;
+        Long seconds = instant - hours * 3600 - minutes * 60;
+
+        return String.format("%02d", Integer.parseInt(hours.toString())) + ":"
+               + String.format("%02d", Integer.parseInt(minutes.toString())) + ":"
+               + String.format("%02d", Integer.parseInt(seconds.toString()));
+    }
+
+    @Override
+    public String toString() {
+        return ""
+            + this.position.toString() + "\n"
+            + instantsString() + "\n"
+            + this.text.toString() + "\n\n";
     }
 
     public static class SubtitlePiecesCollector {
@@ -130,7 +153,7 @@ public class Subtitle {
                             }
                             if (Subtitle.PRED_TEXT.test(line)) {
                                 System.out.println("newtext=" + line);
-                                acc.text.append((acc.text.length()==0) ? line : "\n" + line);
+                                acc.text.append((acc.text.length() == 0) ? line : "\n" + line);
                             }
                             if (Subtitle.PRED_EMPTY_LINE.test(line)) {
                                 System.out.println("FLUSHING");
