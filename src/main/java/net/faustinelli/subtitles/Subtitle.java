@@ -7,9 +7,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -34,10 +32,10 @@ public class Subtitle {
                                                         && !PATTERN_EMPTY_LINE.matcher(line).matches();
     public static Predicate<String> PRED_EMPTY_LINE = line -> PATTERN_EMPTY_LINE.matcher(line).matches();
 
-    public Integer position;
-    public Long startInstant;
-    public Long endInstant;
-    public String text;
+    public Integer position = null;
+    public Long startInstant = null;
+    public Long endInstant = null;
+    public String text = "";
 
     public Subtitle(String position, String instants, String text) {
         this(position, splitInstants(instants)[0], splitInstants(instants)[1], text);
@@ -72,16 +70,26 @@ public class Subtitle {
         public String position = "";
         public String instants = "";
         public StringBuilder text = new StringBuilder();
-
         public List<Subtitle> harvest = new ArrayList<>();
 
-        public SubtitlePiecesCollector() { }
+        public SubtitlePiecesCollector() {
+        }
 
         public SubtitlePiecesCollector(List<Subtitle> subtitles) {
             this.harvest = new ArrayList<>(subtitles);
         }
 
         public SubtitlePiecesCollector flushSubtitle() {
+            if ("".equals(this.position)) {
+                throw new RuntimeException("Cannot build the subtitle without position");
+            }
+            if ("".equals(this.instants)) {
+                throw new RuntimeException("Cannot build the subtitle without instants");
+            }
+            if ("".equals(this.text)) {
+                throw new RuntimeException("Cannot build the subtitle without text");
+            }
+
             Subtitle newOne = new Subtitle(this.position, this.instants, this.text.toString());
             SubtitlePiecesCollector result = new SubtitlePiecesCollector(this.harvest);
             result.harvest.add(newOne);
@@ -105,13 +113,34 @@ public class Subtitle {
         try {
 
             Stream<String> stream = Files.lines(Paths.get(filename));
-            stream
-                .filter(PRED_TEXT)
-                .forEach(System.out::println);
+//            stream
+//                .filter(PRED_TEXT)
+//                .forEach(System.out::println);
 
-//            stream.collect(Collectors.toList())
-//                .stream();
-//                .reduce();
+            List<Subtitle> subs = stream
+                .reduce(new SubtitlePiecesCollector(),
+                        (SubtitlePiecesCollector acc, String line) -> {
+                            if (Subtitle.PRED_POSITION.test(line)) {
+                                System.out.println("position=" + line);
+                                acc.position = line;
+                            }
+                            if (Subtitle.PRED_INSTANTS.test(line)) {
+                                System.out.println("instants=" + line);
+                                acc.instants = line;
+                            }
+                            if (Subtitle.PRED_TEXT.test(line)) {
+                                System.out.println("newtext=" + line);
+                                acc.text.append((acc.text.length()==0) ? line : "\n" + line);
+                            }
+                            if (Subtitle.PRED_EMPTY_LINE.test(line)) {
+                                System.out.println("FLUSHING");
+                                acc = acc.flushSubtitle();
+                            }
+                            return acc;
+                        },
+                        (a, b) -> a).harvest;
+
+            String pippo = "";
 
         } catch (IOException e) {
             e.printStackTrace();
