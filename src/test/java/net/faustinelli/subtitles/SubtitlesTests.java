@@ -1,12 +1,12 @@
 package net.faustinelli.subtitles;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 
 public class SubtitlesTests {
 
@@ -39,6 +39,26 @@ public class SubtitlesTests {
     }
 
     @Test
+    public void testIncreaseInstants() {
+        Subtitle sub = new Subtitle("12", "00:01:02", "03:04:05", "dear\nfriend");
+
+        sub.increaseInstants(TimeUnit.HOURS, 1);
+        assertEquals("01:01:02 --> 04:04:05", sub.instantsString());
+        sub.increaseInstants(TimeUnit.HOURS, -1);
+        assertEquals("00:01:02 --> 03:04:05", sub.instantsString());
+
+        sub.increaseInstants(TimeUnit.MINUTES, 1);
+        assertEquals("00:02:02 --> 03:05:05", sub.instantsString());
+        sub.increaseInstants(TimeUnit.MINUTES, -1);
+        assertEquals("00:01:02 --> 03:04:05", sub.instantsString());
+
+        sub.increaseInstants(TimeUnit.SECONDS, 1);
+        assertEquals("00:01:03 --> 03:04:06", sub.instantsString());
+        sub.increaseInstants(TimeUnit.SECONDS, -1);
+        assertEquals("00:01:02 --> 03:04:05", sub.instantsString());
+    }
+
+    @Test
     public void splitInstantsTest() {
         String[] xxx = Subtitle.splitInstants("01:02:03,4  --> 05:06:07,08");
         assertEquals("01:02:03", xxx[0]);
@@ -47,14 +67,21 @@ public class SubtitlesTests {
 
     @Test
     public void testSubtitlePrintings() {
-        Subtitle sub = new Subtitle("12","00:01:02","03:04:05","dear\nfriend");
+        Subtitle sub = new Subtitle("12", "00:01:02", "03:04:05", "dear\nfriend");
 
         assertEquals("00:01:02 --> 03:04:05", sub.instantsString());
-        assertEquals("12\n00:01:02 --> 03:04:05\ndear\nfriend\n\n", sub.toString());
+        assertEquals("12\n00:01:02 --> 03:04:05\ndear\nfriend\n", sub.toString());
     }
 
     @Test
-    public void readFileIntoSubtitlesListTest() {
+    public void readFileIntoSubtitlesListTest() throws IOException {
+        String filename = "I:/software/experiments/module_1/src/main/resources/subtitles/samples/example1.srt";
 
+        List<Subtitle> subtitles = Subtitle.readFileIntoSubtitles(filename);
+
+        Subtitle sub0 = subtitles.get(0);
+        assertEquals("1\n00:02:17 --> 00:02:20\nSenator, we're making\nour final approach into Coruscant.\n", sub0.toString());
+        Subtitle sub1 = subtitles.get(1);
+        assertEquals("2\n00:02:20 --> 00:02:22\nVery good, Lieutenant.\n", sub1.toString());
     }
 }
