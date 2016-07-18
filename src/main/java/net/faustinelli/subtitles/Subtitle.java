@@ -35,9 +35,9 @@ public class Subtitle {
     public static Predicate<String> PRED_EMPTY_LINE = line -> PATTERN_EMPTY_LINE.matcher(line).matches();
 
     public Integer position;
-    private Long startInstant;
-    private Long endInstant;
-    private String text;
+    public Long startInstant;
+    public Long endInstant;
+    public String text;
 
     public Subtitle(String position, String instants, String text) {
         this(position, splitInstants(instants)[0], splitInstants(instants)[1], text);
@@ -74,6 +74,8 @@ public class Subtitle {
         public StringBuilder text = new StringBuilder();
 
         public List<Subtitle> harvest = new ArrayList<>();
+
+        public SubtitlePiecesCollector() { }
 
         public SubtitlePiecesCollector(List<Subtitle> subtitles) {
             this.harvest = new ArrayList<>(subtitles);
