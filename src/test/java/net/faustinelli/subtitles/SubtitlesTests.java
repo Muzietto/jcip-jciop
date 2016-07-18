@@ -30,8 +30,11 @@ public class SubtitlesTests {
         assertEquals(0, col2.text.length());
         assertEquals("", col2.position);
         assertEquals("", col2.instants);
-        Subtitle subtitle = col2.harvest.get(0);
+        Subtitle subtitle = col2.harvest.get(1);
         assertEquals(new Integer(1), subtitle.position);
+        assertEquals(new Long(3723L), subtitle.startInstant);
+        assertEquals(new Long(18367L), subtitle.endInstant);
+        assertEquals("Very well,\nmy friend", subtitle.text);
 
     }
 
