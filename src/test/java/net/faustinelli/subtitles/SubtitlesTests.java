@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * Project: jcip-jciop
  * Author: Marco Faustinelli - Muzietto (contacts@faustinelli.net)
@@ -7,20 +6,6 @@
  * The GPL 3.0 License - Copyright (c) 2015-2016 - The jcip-jciop Project
  */
 
-package net.faustinelli.subtitles;
-
-import org.junit.Test;
-
-/**
- * Created by Marco Faustinelli (Muzietto) on 18/07/2016.
- */
-public class SubtitlesTests {
-
-    @Test
-    public void testReadAndMatch() throws Exception {
-
-
-=======
 package net.faustinelli.subtitles;
 
 import static org.junit.Assert.*;
@@ -33,6 +18,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
+/**
+ * Created by Marco Faustinelli (Muzietto) on 18/07/2016.
+ */
 public class SubtitlesTests {
 
     @Test
@@ -138,7 +126,7 @@ public class SubtitlesTests {
 
     @Test
     public void readFileIntoSubtitlesListTest() throws IOException {
-        String filename = "I:/software/experiments/module_1/src/main/resources/subtitles/samples/example1.srt";
+        String filename = "M:\\win\\user\\documents\\GitHub\\jcip-jciop\\src\\main\\resources\\subtitles\\samples\\example1.srt";
 
         List<Subtitle> subtitles = Subtitle.readFileIntoSubtitles(filename);
 
@@ -150,8 +138,8 @@ public class SubtitlesTests {
 
     @Test
     public void writeSubtitlesListIntoFileTest() throws IOException {
-        String input = "I:/software/experiments/module_1/src/main/resources/subtitles/samples/example1.srt";
-        String output = "I:/software/experiments/module_1/src/main/resources/subtitles/samples/example1_out.srt";
+        String input = "M:\\win\\user\\documents\\GitHub\\jcip-jciop\\src\\main\\resources\\subtitles\\samples/example1.srt";
+        String output = "M:\\win\\user\\documents\\GitHub\\jcip-jciop\\src\\main\\resources\\subtitles\\samples/example1_out.srt";
         List<Subtitle> subtitles1 = Subtitle.readFileIntoSubtitles(input);
 
         new Subtitle.SubtitlePiecesCollector(subtitles1).dumpToFile(output);
@@ -164,7 +152,7 @@ public class SubtitlesTests {
 
     @Test
     public void readFileModifyInstantsTest() throws IOException {
-        String filename = "I:/software/experiments/module_1/src/main/resources/subtitles/samples/example1.srt";
+        String filename = "M:\\win\\user\\documents\\GitHub\\jcip-jciop\\src\\main\\resources\\subtitles\\samples/example1.srt";
 
         List<Subtitle> subtitles = Subtitle.readFileIntoSubtitles(filename);
 
@@ -174,6 +162,5 @@ public class SubtitlesTests {
         assertEquals("1\n01:02:17 --> 01:02:20\nSenator, we're making\nour final approach into Coruscant.\n", sub0.toString());
         Subtitle sub1 = subtitles.get(1);
         assertEquals("2\n01:02:20 --> 01:02:22\nVery good, Lieutenant.\n", sub1.toString());
->>>>>>> origin/master
     }
 }

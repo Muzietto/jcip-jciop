@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * Project: jcip-jciop
  * Author: Marco Faustinelli - Muzietto (contacts@faustinelli.net)
@@ -7,15 +6,6 @@
  * The GPL 3.0 License - Copyright (c) 2015-2016 - The jcip-jciop Project
  */
 
-package net.faustinelli.subtitles;
-
-/**
- * Created by Marco Faustinelli (Muzietto) on 18/07/2016.
- */
-public class Subtitle {
-
-    public static String SRT_MATCHER = "(\\d+)\\n(\\d{2}:\\d{2}:\\d{2}).+-->.*(\\d{2}:\\d{2}:\\d{2}).+?\\n([\\S\\s]*?)\\n{2}";
-=======
 package net.faustinelli.subtitles;
 
 import static java.util.concurrent.TimeUnit.HOURS;
@@ -30,6 +20,9 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+/**
+ * Created by Marco Faustinelli (Muzietto) on 18/07/2016.
+ */
 public class Subtitle {
 
     public static String SRT_PATTERN = "(\\d+)\\n(\\d{2}:\\d{2}:\\d{2}).*-->\\s+(\\d{2}:\\d{2}:\\d{2}).+?\\n([\\s\\S]+)\\n{2}";
@@ -209,5 +202,4 @@ public class Subtitle {
         collector.increaseInstants(TimeUnit.SECONDS, 27);
         collector.dumpToFile(output);
     }
->>>>>>> origin/master
 }
