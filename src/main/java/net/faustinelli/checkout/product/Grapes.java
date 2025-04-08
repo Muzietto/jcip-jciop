@@ -1,17 +1,22 @@
 package main.java.net.faustinelli.checkout.product;
 
-import main.java.net.faustinelli.checkout.pricing.PricingRule;
-
 public class Grapes implements Product {
-
-  @Override
-  public String price(int qty, PricingRule rule) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'price'");
-  }
 
   @Override
   public int unitaryPrice() {
     return 400;
+  }
+
+  @Override
+  public final int hashCode() {
+    return 1234;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this.hashCode() == obj.hashCode())
+      return true;
+
+    return false;
   }
 }

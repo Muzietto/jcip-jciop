@@ -1,15 +1,15 @@
 package main.java.net.faustinelli.checkout.product;
 
-public class Soup implements Product {
+public class Ramen implements Product {
 
   @Override
   public int unitaryPrice() {
-    return 100;
+    return 40;
   }
 
   @Override
   public final int hashCode() {
-    return 13;
+    return 123;
   }
 
   @Override
